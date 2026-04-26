@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html class="light" lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style>
+      body { font-family: Manrope, sans-serif; background-color: #f5f5dc; }
+    </style>
+    <title>{{ post['title'] }}</title>
+  </head>
+  <body class="text-stone-800 antialiased selection:bg-[#8b7355] selection:text-white">
+    <header class="fixed top-0 left-0 w-full z-50 bg-stone-50 border-b border-stone-200/50">
+      <div class="flex justify-between items-center h-16 px-6 w-full max-w-lg mx-auto">
+        <div class="flex items-center gap-4">
+          <a href="{{ url_for('list_posts') }}" class="text-orange-900 hover:bg-stone-100 transition-colors p-2 rounded-full">←</a>
+          <h1 class="font-semibold text-lg tracking-tight text-orange-900">The Journal</h1>
+        </div>
+        <a href="{{ url_for('new_post') }}" class="text-sm text-stone-500">글쓰기</a>
+      </div>
+    </header>
+
+    <main class="pt-24 pb-24 px-6 max-w-lg mx-auto min-h-screen">
+      <header class="mb-8">
+        <div class="text-xs text-stone-500 mb-3">{{ post['created_at'] }}</div>
+        <h2 class="text-3xl font-semibold text-stone-900 leading-tight">{{ post['title'] }}</h2>
+      </header>
+
+      <article class="text-base leading-relaxed text-stone-700 whitespace-pre-wrap">{{ post['content'] }}</article>
+
+      <section class="mt-12 pt-6 border-t border-stone-200/70 flex flex-col gap-3">
+        <div class="grid grid-cols-2 gap-3">
+          <a href="{{ url_for('edit_post', post_id=post['id']) }}" class="flex items-center justify-center gap-2 bg-[#8b7355] text-white py-3 rounded-lg font-semibold hover:opacity-90 transition-all">[수정]</a>
+          <a href="{{ url_for('list_posts') }}" class="flex items-center justify-center gap-2 border border-[#8b7355] text-[#715b3e] py-3 rounded-lg font-semibold hover:bg-stone-100 transition-all">목록</a>
+        </div>
+
+        <form method="post" action="{{ url_for('delete_post', post_id=post['id']) }}" onsubmit="return confirm('정말 삭제할까요?');">
+          <button type="submit" class="w-full border border-red-300 text-red-600 py-3 rounded-lg font-semibold hover:bg-red-50 transition-all">[삭제]</button>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>
