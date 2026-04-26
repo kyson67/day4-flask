@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: dya4-flask-board
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.13
+      - key: DATABASE_PATH
+        value: /var/data/board.sqlite3
+    disk:
+      name: sqlite-data
+      mountPath: /var/data
+      sizeGB: 1

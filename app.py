@@ -1,15 +1,19 @@
+import os
 from pathlib import Path
 import sqlite3
 
 from flask import Flask, abort, g, redirect, render_template, request, url_for
 
 app = Flask(__name__)
-app.config["DATABASE"] = str(Path(__file__).resolve().parent / "board.sqlite3")
+default_db_path = Path(__file__).resolve().parent / "board.sqlite3"
+app.config["DATABASE"] = os.environ.get("DATABASE_PATH", str(default_db_path))
 
 
 def get_db() -> sqlite3.Connection:
     if "db" not in g:
-        g.db = sqlite3.connect(app.config["DATABASE"])
+        db_path = Path(app.config["DATABASE"])
+        db_path.parent.mkdir(parents=True, exist_ok=True)
+        g.db = sqlite3.connect(db_path)
         g.db.row_factory = sqlite3.Row
     return g.db
 
